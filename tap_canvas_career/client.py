@@ -2,7 +2,7 @@
 
 import requests
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, List, Iterable
+from typing import Any, Dict, Optional, Union, List, Iterable, Callable
 
 from memoization import cached
 
@@ -11,6 +11,11 @@ from singer_sdk.streams import RESTStream
 
 from tap_canvas_career.auth import CanvasCareerAuthenticator
 
+from http.client import RemoteDisconnected
+from requests.exceptions import ConnectionError
+
+from singer_sdk.exceptions import RetriableAPIError
+import backoff
 
 
 class CanvasCareerStream(RESTStream):
@@ -40,3 +45,17 @@ class CanvasCareerStream(RESTStream):
     ) -> Dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         return {}
+
+    def request_decorator(self, func: Callable) -> Callable:
+        decorator: Callable = backoff.on_exception(
+            self.backoff_wait_generator,
+            (
+                RetriableAPIError,
+                requests.exceptions.ReadTimeout,
+                ConnectionError,
+                RemoteDisconnected,
+            ),
+            max_tries=8,
+            on_backoff=self.backoff_handler,
+        )(func)
+        return decorator
