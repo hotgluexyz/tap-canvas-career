@@ -36,11 +36,11 @@ class CanvasCareerAuthenticator(APIAuthenticatorBase):
         """Define the OAuth request body."""
         multipart_data = MultipartEncoder(
             fields={
-                'grant_type': 'refresh_token',
-                'client_id': self._config.get("client_id"),
-                'client_secret': self._config.get("client_secret"),
+                "grant_type": "refresh_token",
+                "client_id": self._config.get("client_id"),
+                "client_secret": self._config.get("client_secret"),
                 "redirect_uri": self._config.get("redirect_uri"),
-                'refresh_token': self._config.get("refresh_token"),
+                "refresh_token": self._config.get("refresh_token"),
             }
         )
         return multipart_data
@@ -59,16 +59,22 @@ class CanvasCareerAuthenticator(APIAuthenticatorBase):
 
         return not ((expires_in - now) < 120)
 
-    @backoff.on_exception(backoff.expo,(RemoteDisconnected, ConnectionError),max_tries=5,factor=3)
+    @backoff.on_exception(
+        backoff.expo, (RemoteDisconnected, ConnectionError), max_tries=5, factor=3
+    )
     def update_access_token(self) -> None:
         request_body = self.oauth_request_body
         headers = {
-            'Content-Type': request_body.content_type,
+            "Content-Type": request_body.content_type,
         }
-        self.logger.info(f"Oauth request - endpoint: {self._auth_endpoint}, body: {self.oauth_request_body}")
-        
+        self.logger.info(
+            f"Oauth request - endpoint: {self._auth_endpoint}, body: {self.oauth_request_body}"
+        )
+
         token_response = requests.post(
-            self._auth_endpoint, data=request_body, headers=headers,
+            self._auth_endpoint,
+            data=request_body,
+            headers=headers,
         )
 
         try:
