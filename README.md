@@ -9,7 +9,7 @@ Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 You can install this tap directly from the GitHub repository using pipx:
 
 ```bash
-pipx install git+https://github.com/your-org-or-username/tap-canvas-career.git
+pipx install git+https://github.com/hotgluexyz/tap-canvas-career.git
 ```
 
 ## Configuration
