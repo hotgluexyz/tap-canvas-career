@@ -24,7 +24,6 @@ Create a config file containing the Canvas API credentials, e.g.:
   "account_id": "self",
   "client_id": "xxxxxxxxxxxxxxxxxxxxxxxx",
   "client_secret": "xxxxxxxxxxxxxxxx",
-  "refresh_token": "xxxxxxxxxxxxxxxxxxxxxxxx",
   "start_date": "2017-01-01T00:00:00Z",
 }
 ```

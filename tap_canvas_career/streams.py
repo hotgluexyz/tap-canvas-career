@@ -117,7 +117,7 @@ class GradesStream(CanvasCareerStream):
 
         # check if the report is ready
         status = self.check_report_status(res_json["id"])
-        while status["status"] in ["created", "running"]:
+        while status["status"] in ["created", "running", "compiling"]:
             self.logger.info(
                 f"Report {res_json['id']} isn't completed yet, waiting for 5 seconds..."
             )

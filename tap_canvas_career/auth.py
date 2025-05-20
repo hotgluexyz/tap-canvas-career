@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Optional
 
 import requests
 from singer_sdk.authenticators import APIAuthenticatorBase
@@ -36,11 +36,9 @@ class CanvasCareerAuthenticator(APIAuthenticatorBase):
         """Define the OAuth request body."""
         multipart_data = MultipartEncoder(
             fields={
-                "grant_type": "refresh_token",
+                "grant_type": "client_credentials",
                 "client_id": self._config.get("client_id"),
                 "client_secret": self._config.get("client_secret"),
-                "redirect_uri": self._config.get("redirect_uri"),
-                "refresh_token": self._config.get("refresh_token"),
             }
         )
         return multipart_data
