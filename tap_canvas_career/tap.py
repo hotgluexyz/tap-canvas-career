@@ -35,7 +35,6 @@ class TapCanvasCareer(Tap):
         th.Property("client_id", th.StringType, required=True),
         th.Property("client_secret", th.StringType, required=True),
         th.Property("account_id", th.StringType, required=True),
-        th.Property("refresh_token", th.StringType, required=True),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
