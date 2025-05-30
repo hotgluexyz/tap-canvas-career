@@ -133,8 +133,12 @@ class GradesStream(CanvasCareerStream):
         self.logger.info(
             f"Report {res_json['id']} completed successfully, processing data..."
         )
-        url = status["attachment"]["url"]
-        response = requests.get(url)
+        url = status["file_url"]
+        headers = self.http_headers
+        authenticator = self.authenticator
+        if authenticator:
+            headers.update(authenticator.auth_headers or {})
+        response = requests.get(url, headers=headers)
         csv_content = response.content.decode("utf-8")
         reader = csv.DictReader(csv_content.splitlines())
         yield from reader
